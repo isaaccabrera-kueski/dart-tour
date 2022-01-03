@@ -8,6 +8,18 @@ void breedMoreLlamas() => print("Breed more llamas");
 
 void buyMoreLlamas() => print("Buy more llamas");
 
+void cleanLlamasStals() => print('Clean llamas stalls');
+
+void misbehave() {
+  try {
+    dynamic foo = true;
+    print(foo++); // Runtime error
+  } catch (e) {
+    print('misbehave() partially handled ${e.runtimeType}.');
+    rethrow; // Allow callers to see the exception.
+  }
+}
+
 void main() {
   print("EXCEPTIONS\n");
   // Throw an exception
@@ -34,4 +46,31 @@ void main() {
     // No specified type, handles all
     print('Something really unknown $e');
   }
+
+  try {
+    breedMoreLlamas();
+  } on Exception catch (e) {
+    print('Exception details $e');
+  } catch (e,s) {
+    print('Exception details $e');
+    print('Stack Trace $s');
+  }
+
+  // Partially handle exception
+  try {
+    misbehave();
+  } catch (e) {
+    print('main() finished handling ${e.runtimeType}.');
+  }
+
+  // Ensure that some code runs whether or not the exception is thrown
+  // use finally block
+  try {
+    breedMoreLlamas();
+  } on OutOfLlamasException catch (e) {
+    print(e);
+  } finally {
+    cleanLlamasStals();
+  }
+
 }
